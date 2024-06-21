@@ -42,3 +42,11 @@ Report from:  21 Jun 24 15:37 MSK
 0.21s	   1563	https://google.com/me
 0.21s elapsed
 
+Report from:  21 Jun 24 15:46 MSK
+0.27s	  22502	http://google.com
+0.27s elapsed
+
+Report from:  21 Jun 24 15:48 MSK
+0.29s	  22584	http://google.com
+0.29s elapsed
+

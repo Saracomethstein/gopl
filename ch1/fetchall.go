@@ -55,7 +55,7 @@ func fetchUp(url string, ch chan<- string) {
 }
 
 func reportWriter(str string) (l int) {
-	file, err := os.OpenFile("report.txt", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	file, err := os.OpenFile("fetchallReport/report.txt", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 
 	if err != nil {
 		fmt.Println(err)
