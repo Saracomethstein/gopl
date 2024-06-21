@@ -1,0 +1,52 @@
+Report from:  21 Jun 24 15:31 MSK
+0.49s	 506675	https://youtube.com
+0.67s	  32378	https://godoc.org
+1.19s	   4154	http://gopl.io
+
+Report from:  21 Jun 24 15:31 MSK
+0.39s	 507926	https://youtube.com
+0.57s	  32378	https://godoc.org
+1.20s	   4154	http://gopl.io
+
+Report from:  21 Jun 24 15:33 MSK
+0.36s	 510062	https://youtube.com
+0.54s	  32378	https://godoc.org
+1.18s	   4154	http://gopl.io
+
+Report from:  21 Jun 24 15:33 MSK
+0.39s	 508889	https://youtube.com
+0.62s	  32378	https://godoc.org
+1.24s	   4154	http://gopl.io
+1.24s elapsed
+
+Report from:  21 Jun 24 15:34 MSK
+0.48s	 221230	https://www.amazon.com/b?node=21576558011
+0.48s elapsed
+
+Report from:  21 Jun 24 15:35 MSK
+Get "me.com": unsupported protocol scheme ""0.00s elapsed
+
+Report from:  21 Jun 24 15:35 MSK
+1.05s	  29676	http://me.com
+1.05s elapsed
+
+Report from:  21 Jun 24 15:36 MSK
+0.19s	   3156	https://edu.21-school.ru/
+0.19s elapsed
+
+Report from:  21 Jun 24 15:37 MSK
+0.23s	   1563	http://google.com/me
+0.23s elapsed
+
+Report from:  21 Jun 24 15:37 MSK
+0.21s	   1563	https://google.com/me
+0.21s elapsed
+
+Report from:  21 Jun 24 15:46 MSK
+0.27s	  22502	http://google.com
+0.27s elapsed
+
+Report from:  21 Jun 24 15:48 MSK
+0.29s	  22584	http://google.com
+0.29s elapsed
+
