@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"sync"
 )
 
@@ -11,8 +12,18 @@ var mu sync.Mutex
 var count int
 
 func main() {
+	cycles := 5
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		lissajous(w)
+		lissajous(w, cycles)
+	})
+	http.HandleFunc("/snippet", func(w http.ResponseWriter, r *http.Request) {
+		cycles = showSnippet(w, r, "cycles")
+		if cycles > 0 {
+			lissajous(w, cycles)
+		} else {
+			http.NotFound(w, r)
+		}
 	})
 	http.HandleFunc("/count", counter)
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))
@@ -42,4 +53,14 @@ func counter(w http.ResponseWriter, r *http.Request) {
 	mu.Lock()
 	fmt.Fprintf(w, "Count %d\n", count)
 	mu.Unlock()
+}
+
+func showSnippet(w http.ResponseWriter, r *http.Request, snippetName string) (resultSnippet int) {
+	snippet, err := strconv.Atoi(r.URL.Query().Get(snippetName))
+
+	if err != nil || snippet < 1 {
+		return
+	}
+	resultSnippet = snippet
+	return resultSnippet
 }
