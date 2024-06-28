@@ -25,8 +25,33 @@ func PopCountOld(x uint64) int {
 // Benchmark test:	3.852 ns/op
 func PopCountNew(x uint64) int {
 	var result int
-	for i := 0; i < 7; i++ {
+	for i := 0; i < 8; i++ {
 		result += int(pc[byte(x>>(i*8))])
 	}
 	return result
+}
+
+// Task 2.4 (по всем 64 позициям)
+// Benchmark test: 17.44 ns/op
+func PopCount64(x uint64) int {
+	var count int
+	for i := 0; i < 64; i++ {
+		if x&1 == 1 {
+			count++
+		}
+		x >>= 1
+	}
+	return count
+}
+
+func PopCountDrop64(x uint64) int {
+	var count int
+	for i := 0; i < 64; i++ {
+		if x&1 == 1 {
+			x = x & (x - 1)
+			count++
+		}
+		x >>= 1
+	}
+	return count
 }
