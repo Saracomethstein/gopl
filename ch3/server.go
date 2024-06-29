@@ -1,25 +1,28 @@
 package main
 
 import (
+	mondelbrot "ch3/mondelbrot"
+	surface "ch3/surface"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
-	surfacepac "surface/surface"
 )
 
 func main() {
 	http.HandleFunc("/surface", func(w http.ResponseWriter, r *http.Request) {
-		surfacepac.Surface(w)
+		surface.Surface(w)
 	})
 
-	// http.HandleFunc("/mondelbrot", func(w http.ResponseWriter, r *http.Request) {
-	// 	mondelbrot.Mondelbrot()
-	// })
+	http.HandleFunc("/mondelbrot", func(w http.ResponseWriter, r *http.Request) {
+		mondelbrot.Mondelbrot(w, r)
+	})
 
 	http.HandleFunc("surface/snippet", func(w http.ResponseWriter, r *http.Request) {
-		surfacepac.Cells = showSnippet(r, "cells")
-		if surfacepac.Cells > 0 {
-			surfacepac.Surface(w)
+		fmt.Fprintf(w, "%v", surface.Cells)
+		surface.Cells = showSnippet(r, "cells")
+		if surface.Cells > 0 {
+			surface.Surface(w)
 		} else {
 			http.NotFound(w, r)
 		}

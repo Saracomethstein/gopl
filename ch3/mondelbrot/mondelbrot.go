@@ -5,31 +5,33 @@ import (
 	"image/color"
 	"image/png"
 	"math/cmplx"
-	"os"
+	"net/http"
 )
 
-func Mondelbrot() {
-	const (
-		xmin, ymin, xmax, ymax = -2, -2, +2, +2
-		width, height          = 1024, 1024
-	)
+const (
+	xmin, ymin, xmax, ymax = -2, -2, +2, +2
+	width, height          = 1024, 1024
+)
 
-	img := image.NewRGBA(image.Rect(0, 0, width, height))
+func Mondelbrot(w http.ResponseWriter, r *http.Request) {
+	rect := image.Rect(0, 0, width, height)
+	rgba := image.NewRGBA(rect)
 
 	for py := 0; py < height; py++ {
 		y := float64(py)/height*(ymax-ymin) + xmin
 		for px := 0; px < width; px++ {
 			x := float64(px)/width*(xmax-xmin) + xmin
 			z := complex(x, y)
-			img.Set(px, py, helpMondelbrot(z))
+			rgba.Set(px, py, helpMondelbrot(z))
 		}
 	}
-	png.Encode(os.Stdout, img)
+
+	w.Header().Set("Content-type", "image/png")
+	png.Encode(w, rgba)
 }
 
 func helpMondelbrot(z complex128) color.Color {
 	const iterations = 200
-	const contrast = 15
 
 	var v complex128
 
@@ -37,7 +39,7 @@ func helpMondelbrot(z complex128) color.Color {
 		v = v*v + z
 
 		if cmplx.Abs(v) > 2 {
-			return color.Gray{255 - contrast*n}
+			return color.RGBA{150 - 10*n, 40 - 5*n, 120 + 2*n, 255}
 		}
 	}
 	return color.Black
