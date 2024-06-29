@@ -1,16 +1,16 @@
-package main
+package surfacepac
 
 import (
 	"fmt"
-	"log"
 	"math"
 	"net/http"
 	"sync"
 )
 
+var Cells int = 100
+
 const (
 	width, height = 2500, 1400
-	cells         = 200
 	xyrange       = 30.0
 	xyscale       = width / 2 / xyrange
 	zscale        = height * 0.4
@@ -23,20 +23,14 @@ const (
 var sin30, cos30 = math.Sin(angle), math.Cos(angle)
 var mu sync.Mutex
 
-func main() {
-	http.HandleFunc("/", surface)
-	fmt.Println("Server is running at http://localhost:8000")
-	log.Fatal(http.ListenAndServe("localhost:8000", nil))
-}
-
-func surface(w http.ResponseWriter, r *http.Request) {
+func Surface(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "image/svg+xml")
 	fmt.Fprintf(w, "<svg xmlns='http://www.w3.org/2000/svg' "+
 		"style='stroke: grey; fill: white; background-color: black; stroke-width: 0.3' "+
 		"width='%d' height='%d'>", width, height)
 
-	for i := 0; i < cells; i++ {
-		for j := 0; j < cells; j++ {
+	for i := 0; i < int(Cells); i++ {
+		for j := 0; j < int(Cells); j++ {
 			ax, ay, az, ok1 := corner(i+1, j)
 			bx, by, bz, ok2 := corner(i, j)
 			cx, cy, cz, ok3 := corner(i, j+1)
@@ -52,12 +46,10 @@ func surface(w http.ResponseWriter, r *http.Request) {
 }
 
 func corner(i, j int) (float64, float64, float64, bool) {
-	x := xyrange * (float64(i)/cells - 0.5)
-	y := xyrange * (float64(j)/cells - 0.5)
+	x := xyrange * (float64(i)/float64(Cells) - 0.5)
+	y := xyrange * (float64(j)/float64(Cells) - 0.5)
 
 	z := f(x, y, 1) // basic figure
-
-	fmt.Println(z)
 
 	sx := width/2 + (x-y)*cos30*xyscale
 	sy := height/2 + (x+y)*sin30*xyscale - z*zscale
