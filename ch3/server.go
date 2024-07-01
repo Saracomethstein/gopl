@@ -2,6 +2,7 @@ package main
 
 import (
 	mondelbrot "ch3/mondelbrot"
+	newton "ch3/newton"
 	surface "ch3/surface"
 	"fmt"
 	"log"
@@ -16,6 +17,10 @@ func main() {
 
 	http.HandleFunc("/mondelbrot", func(w http.ResponseWriter, r *http.Request) {
 		mondelbrot.Mondelbrot(w, r)
+	})
+
+	http.HandleFunc("/newton", func(w http.ResponseWriter, r *http.Request) {
+		newton.NewtonMondelbrot(w, r)
 	})
 
 	http.HandleFunc("surface/snippet", func(w http.ResponseWriter, r *http.Request) {
