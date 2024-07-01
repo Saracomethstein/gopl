@@ -17,7 +17,6 @@ func NewtonComplex64Handler(w http.ResponseWriter, r *http.Request) {
 			img.Set(px, py, newtonComplex64(z))
 		}
 	}
-
 	w.Header().Set("Content-type", "image/png")
 	png.Encode(w, img)
 }
@@ -33,7 +32,6 @@ func NewtonComplex128Handler(w http.ResponseWriter, r *http.Request) {
 			img.Set(px, py, newtonComplex128(z))
 		}
 	}
-
 	w.Header().Set("Content-type", "image/png")
 	png.Encode(w, img)
 }
