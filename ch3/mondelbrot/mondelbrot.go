@@ -14,14 +14,14 @@ const (
 	subsamples             = 4
 )
 
-func Mondelbrot(w http.ResponseWriter, r *http.Request) {
+func Mondelbrot(w http.ResponseWriter, r *http.Request, resx float64, resy float64) {
 	rect := image.Rect(0, 0, width, height)
 	rgba := image.NewRGBA(rect)
 
 	for py := 0; py < height; py++ {
-		y := float64(py)/height*(ymax-ymin) + xmin
+		y := resy + float64(py)/height*(ymax-ymin) + xmin
 		for px := 0; px < width; px++ {
-			x := float64(px)/width*(xmax-xmin) + xmin
+			x := resx + float64(px)/width*(xmax-xmin) + xmin
 			rgba.Set(px, py, avergeColor(x, y))
 		}
 	}

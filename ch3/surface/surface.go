@@ -4,10 +4,7 @@ import (
 	"fmt"
 	"math"
 	"net/http"
-	"sync"
 )
-
-var Cells int = 100
 
 const (
 	width, height = 2500, 1400
@@ -21,20 +18,19 @@ const (
 )
 
 var sin30, cos30 = math.Sin(angle), math.Cos(angle)
-var mu sync.Mutex
 
-func Surface(w http.ResponseWriter) {
+func Surface(w http.ResponseWriter, cells int) {
 	w.Header().Set("Content-Type", "image/svg+xml")
 	fmt.Fprintf(w, "<svg xmlns='http://www.w3.org/2000/svg' "+
 		"style='stroke: grey; fill: white; background-color: black; stroke-width: 0.3' "+
 		"width='%d' height='%d'>", width, height)
 
-	for i := 0; i < int(Cells); i++ {
-		for j := 0; j < int(Cells); j++ {
-			ax, ay, az, ok1 := corner(i+1, j)
-			bx, by, bz, ok2 := corner(i, j)
-			cx, cy, cz, ok3 := corner(i, j+1)
-			dx, dy, dz, ok4 := corner(i+1, j+1)
+	for i := 0; i < cells; i++ {
+		for j := 0; j < cells; j++ {
+			ax, ay, az, ok1 := corner(i+1, j, cells)
+			bx, by, bz, ok2 := corner(i, j, cells)
+			cx, cy, cz, ok3 := corner(i, j+1, cells)
+			dx, dy, dz, ok4 := corner(i+1, j+1, cells)
 
 			if ok1 && ok2 && ok3 && ok4 {
 				color := colorSVG((az + bz + cz + dz) / 4)
@@ -45,11 +41,11 @@ func Surface(w http.ResponseWriter) {
 	fmt.Fprintf(w, "</svg>")
 }
 
-func corner(i, j int) (float64, float64, float64, bool) {
-	x := xyrange * (float64(i)/float64(Cells) - 0.5)
-	y := xyrange * (float64(j)/float64(Cells) - 0.5)
+func corner(i, j, cells int) (float64, float64, float64, bool) {
+	x := xyrange * (float64(i)/float64(cells) - 0.5)
+	y := xyrange * (float64(j)/float64(cells) - 0.5)
 
-	z := f(x, y, 1) // basic figure
+	z := f(x, y) // basic figure
 
 	sx := width/2 + (x-y)*cos30*xyscale
 	sy := height/2 + (x+y)*sin30*xyscale - z*zscale
@@ -61,21 +57,10 @@ func corner(i, j int) (float64, float64, float64, bool) {
 	return sx, sy, z, true
 }
 
-func f(x, y float64, figure int) float64 {
+func f(x, y float64) float64 {
 	var formula float64
-	switch figure {
-	case 1:
-		r := math.Hypot(x, y)
-		formula = math.Sin(r) / r
-		break
-	case 2:
-		formula = math.Sin(x) * math.Cos(y)
-		break
-	case 3:
-		sigma := 10.0
-		formula = math.Exp(-(x*x + y*y) / (2 * sigma * sigma))
-		break
-	}
+	r := math.Hypot(x, y)
+	formula = math.Sin(r) / r
 	return formula
 }
 
