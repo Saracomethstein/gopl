@@ -1,4 +1,4 @@
-package iota
+package main
 
 const (
 	KB = 1 << (10 * (iota + 1))
