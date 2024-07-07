@@ -1,4 +1,4 @@
-// basename убиарет компоненты котолога и суффикс каталога
+// basename убиарет компоненты котолога и суффикс каталога.
 package main
 
 func basename(s string) string {
